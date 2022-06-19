@@ -33,3 +33,14 @@
     - findAll() 은 JpaRepository 인터페이스의 상위인 PagingAndSortRepository 의
     - 메서드 파라미터로 전달되는 Pageable 이라는 타입의 객체에 의해서 쿼리가 실행된다.
     - 주의점 : 리턴타입을 Page<T> 타입으로 지정하는 경우 반드시 Pageable 이용 해야함.
+***
+
+### 쿼리 메서드(@Query Methods) 기능과 @Query
+1. 쿼리 메서드 : 메서드의 이름 자체가 쿼리의 구문으로 처리되는 기능
+2. @Query : SQL 과 유사하게 엔티티 클래스의 정보를 이요해서 쿼리를 작성하게 하는 기능
+   1. 필요한 데이터만 선별적으로 추철하는 기능이 가능
+   2. 데이터베이스에 맞는 순수한 SQL(Native SQL) 을 사용하는 기능
+   3. insert,update,delete 와 같은 select 가 아닌 DML 등을 처리하는 기능(@Modifying 과 함께 사용)
+3. Querydsl 등의 동적 쿼리 처리 가능
+
+***
