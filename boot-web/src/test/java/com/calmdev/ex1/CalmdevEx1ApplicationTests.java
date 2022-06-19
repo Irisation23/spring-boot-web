@@ -1,4 +1,4 @@
-package com.calmdev.calmdevex1;
+package com.calmdev.ex1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
