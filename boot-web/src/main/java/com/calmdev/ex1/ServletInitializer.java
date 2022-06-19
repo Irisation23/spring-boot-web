@@ -1,4 +1,4 @@
-package com.calmdev.calmdevex1;
+package com.calmdev.ex1;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
