@@ -24,34 +24,37 @@ public class SampleController {
         log.info("ex....................");
     }
 
-    @GetMapping({"/ex2" , "/exLink"})
+    @GetMapping({"/ex2", "/exLink"})
     public void ex2(Model model) {
-        List<SampleDTO> list = IntStream.rangeClosed(1,20).asLongStream()
-                .mapToObj(i -> {
-                    return SampleDTO.builder()
-                            .sno(i)
-                            .first("First.." + i)
-                            .last("Last.." + i)
-                            .regTime(LocalDateTime.now())
-                            .build();
-                }).collect(Collectors.toList());
+        List<SampleDTO> list = IntStream.rangeClosed(1, 20)
+                                        .asLongStream()
+                                        .mapToObj(i -> {
+                                            return SampleDTO.builder()
+                                                            .sno(i)
+                                                            .first("First.." + i)
+                                                            .last("Last.." + i)
+                                                            .regTime(LocalDateTime.now())
+                                                            .build();
+                                        })
+                                        .collect(Collectors.toList());
 
-        model.addAttribute("list",list);
+        model.addAttribute("list", list);
     }
 
     @GetMapping("/{exInline}")
     public String exInline(RedirectAttributes redirectAttributes) {
+
         log.info("exInline..........................");
 
         SampleDTO dto = SampleDTO.builder()
-                .sno(100L)
-                .first("First....100")
-                .last("Last......100")
-                .regTime(LocalDateTime.now())
-                .build();
+                                 .sno(100L)
+                                 .first("First....100")
+                                 .last("Last......100")
+                                 .regTime(LocalDateTime.now())
+                                 .build();
 
         redirectAttributes.addFlashAttribute("result", "success");
-        redirectAttributes.addFlashAttribute("dto",dto);
+        redirectAttributes.addFlashAttribute("dto", dto);
 
         return "redirect:/sample/ex3";
     }
@@ -59,5 +62,10 @@ public class SampleController {
     @GetMapping("/ex3")
     public void ex3() {
         log.info("ex3");
+    }
+
+    @GetMapping({"/exLayout1" , "/exLayout2" , "/exTemplate" ,"/exSidebar"})
+    public void exLayout1() {
+        log.info("exLayout.......");
     }
 }
