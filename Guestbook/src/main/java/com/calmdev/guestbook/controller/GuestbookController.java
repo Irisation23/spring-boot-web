@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -51,12 +48,40 @@ public class GuestbookController {
         return "redirect:/guestbook/list";
     }
 
-    @GetMapping("/read")
-    public void read(long gno, @ModelAttribute("requestDTO") PageRequestDto requestDto, Model model) {
+    @GetMapping({"/read" , "/modify"})
+    public void read(@RequestParam Long gno, @ModelAttribute("requestDTO") PageRequestDto requestDto, Model model) {
+
         log.info("gno : " + gno );
 
         GuestbookDto dto = guestbookService.read(gno);
 
         model.addAttribute("dto", dto);
+    }
+
+    @PostMapping("/modify")
+    public String modify(GuestbookDto dto
+            , @ModelAttribute("requestDTO") PageRequestDto requestDto
+            , RedirectAttributes redirectAttributes) {
+        // 해당 수정이 완료된 후 원래 페이지로 돌리기 위해 PageRequestDto 를 추가함.
+        log.info("post modify ...........................");
+        log.info("dto : " + dto);
+
+        guestbookService.modify(dto);
+
+        redirectAttributes.addFlashAttribute("page", requestDto.getPage());
+        redirectAttributes.addFlashAttribute("gno" , dto.getGno());
+
+        return "redirect:/guestbook/read?gno="+dto.getGno()+"&page="+requestDto.getPage();
+    }
+
+    @PostMapping("/remove")
+    public String remove(Long gno, RedirectAttributes redirectAttributes) {
+        log.info("gno : " + gno);
+
+        guestbookService.remove(gno);
+
+        redirectAttributes.addFlashAttribute("msg" , gno);
+
+        return "redirect:/guestbook/list";
     }
 }
