@@ -16,6 +16,27 @@
             </a>
         </h1>
 
+        <form action="/guestbook/list" method="get" id="searchForm">
+            <div class="input-group">
+                <input type="hidden" name="page" value="1">
+                <div class="input-group-select">
+                    <select class="custom-select" name="type">
+                        <option th:selected="${pageRequestDto.type == null}">--------</option>
+                        <option th:value="t" th:selected="${pageRequestDto.type == 't'}">제목</option>
+                        <option th:value="c" th:selected="${pageRequestDto.type == 'c'}">내용</option>
+                        <option th:value="w" th:selected="${pageRequestDto.type == 'w'}">작성자</option>
+                        <option th:value="tc" th:selected="${pageRequestDto.type == 'tc'}">제목 + 내용</option>
+                        <option th:value="tcw" th:selected="${pageRequestDto.type == 'tcw'}">제목 + 내용 + 작성자</option>
+                    </select>
+                </div>
+                <input class="form-control" name="keyword" th:value="${pageRequestDto.keyword}">
+                <div class="input-group-append" id="button-addon4">
+                    <button class="btn btn-outline-secondary btn-search" type="button">Search</button>
+                    <button class="btn btn-outline-secondary btn-clear" type="button">Clear</button>
+                </div>
+            </div>
+        </form>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -89,12 +110,22 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script th:inline="javascript">
+
     var msg = [[${msg}]]
     console.log(msg);
 
     if(msg) {
         $(".modal").modal();
     }
-</script>
 
+    var searchForm = $("#searchForm");
+    $('.btn-search').click(function (e){
+       searchForm.submit();
+    });
+
+    $('.btn-clear').click(function (e){
+        searchForm.empty().submit();
+    })
+
+</script>
 </html>
