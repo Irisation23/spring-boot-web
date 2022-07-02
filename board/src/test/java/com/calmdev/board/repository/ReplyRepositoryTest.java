@@ -15,7 +15,8 @@ class ReplyRepositoryTest {
     private ReplyRepository replyRepository;
 
     @Test
-    public void insertReply() {
+    public void testInsertReply() {
+
         IntStream.rangeClosed(1, 300)
                  .forEach(i -> {
                      // 1부터 100까지의 임의의 번호
@@ -33,5 +34,14 @@ class ReplyRepositoryTest {
 
                      replyRepository.save(reply);
                  });
+    }
+
+    @Test
+    public void testReadReply() {
+
+        Reply reply = replyRepository.findById(1L).orElseThrow();
+
+        System.out.println(reply);
+        System.out.println(reply.getBoard());
     }
 }
