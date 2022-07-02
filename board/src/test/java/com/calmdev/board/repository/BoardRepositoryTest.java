@@ -5,7 +5,12 @@ import com.calmdev.board.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Description;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -15,7 +20,7 @@ class BoardRepositoryTest {
     private BoardRepository boardRepository;
 
     @Test
-    public void insertBoard() {
+    public void testInsertBoard() {
 
         IntStream.rangeClosed(1, 100)
                  .forEach(i -> {
@@ -32,5 +37,38 @@ class BoardRepositoryTest {
 
                      boardRepository.save(board);
                  });
+    }
+
+    @Description("@ManyToOne 으로 참조하고 있는 Board 를 조회하는 테스트 코드")
+    @Transactional
+    @Test
+    public void testRead() {
+
+        Board result = boardRepository.findById(100L).orElseThrow();
+
+        System.out.println(result);
+        System.out.println(result.getWriter());
+    }
+
+    @Description("LeftJoin 사용")
+    @Test
+    public void testReadWithWriter() {
+        Object result = boardRepository.getBoardWithWriter(100L);
+
+        Object[] arr = (Object[]) result;
+
+        System.out.println("----------------------------");
+        System.out.println(Arrays.toString(arr));
+    }
+
+    @Description("Board 가 참조하고 있지 않은 상황에서의 조인")
+    @Test
+    public void testGetBoardWithReply() {
+
+        List<Object[]> result = boardRepository.getBoardWithReply(100L);
+
+        for (Object[] arr : result) {
+            System.out.println(Arrays.toString(arr));
+        }
     }
 }
