@@ -1,19 +1,20 @@
 package com.calmdev.board.repository;
 
 import com.calmdev.board.entity.Board;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface BoardRepository extends JpaRepository<Board,Long> {
+public interface BoardRepository extends JpaRepository<Board, Long> {
     /**
-     *  해당 레파지토리의 해결 방법은 getBoardWithWriter()  는 Board 를 사용하고 있고,
-     *  Member를 같이 조회해야 하는 상황임.
-     *  Board 클래스에는 Member와의 연관관계를 맺고 있으므로 b.writer 와 같은 형태로 사용.
-     *  내부 엔티티 사용에는 'LEFT JOIN' 뒤에 'ON' 을 이용할 필요가 없음.
-     *
+     * 해당 레파지토리의 해결 방법은 getBoardWithWriter()  는 Board 를 사용하고 있고,
+     * Member를 같이 조회해야 하는 상황임.
+     * Board 클래스에는 Member와의 연관관계를 맺고 있으므로 b.writer 와 같은 형태로 사용.
+     * 내부 엔티티 사용에는 'LEFT JOIN' 뒤에 'ON' 을 이용할 필요가 없음.
      */
     //한개의 로우(Object) 내에 Object[] 로 나옴.
     @Query("select b, w from Board b left join b.writer w where b.bno = :bno")
@@ -21,4 +22,19 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
     @Query("SELECT b, r FROM Board b LEFT JOIN Reply r ON r.board = b WHERE b.bno = :bno")
     List<Object[]> getBoardWithReply(@Param("bno") Long bno);
+
+    @Query(value = "SELECT b, w, count(r) " +
+            " FROM Board b " +
+            " LEFT JOIN b.writer w " +
+            " LEFT JOIN Reply r ON r.board = b " +
+            " GROUP BY b",
+            countQuery = "SELECT count(b) FROM Board b")
+    Page<Object[]> getBoardWithReplyCount(Pageable pageable);   // 목록 화면에 필요한 데이터
+
+    @Query(value = "SELECT b, w, count(r) " +
+            " FROM Board b " +
+            " LEFT JOIN b.writer w " +
+            " LEFT OUTER JOIN Reply r ON r.board = b " +
+            " WHERE b.bno = :bno")
+    Object getBoardByBno(@Param("bno") Long bno);
 }
