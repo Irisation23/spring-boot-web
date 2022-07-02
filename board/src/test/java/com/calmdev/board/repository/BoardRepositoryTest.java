@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -76,6 +75,27 @@ class BoardRepositoryTest {
         }
     }
 
+    @Description("Board Join twice")
+    @Test
+    public void testWithReplyCount() {
+
+        Pageable pageable = PageRequest.of(0,10, Sort.by("bno").descending());
+
+        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+
+        result.get().forEach(row -> {
+
+            Object[] arr = (Object[]) row;
+
+            System.out.println("여기요");
+            System.out.println(arr[0]);
+            System.out.println(arr[1]);
+            System.out.println(arr[2]);
+            System.out.println(arr.length);
+            System.out.println("저기요");
+            //System.out.println(Arrays.toString(arr));
+        });
+    }
     @Description("JPQLQuery 설정 확인.")
     @Test
     public void testSearch1() {
@@ -89,5 +109,4 @@ class BoardRepositoryTest {
 
         Page<Object[]> result = boardRepository.searchPage("t", "1", pageable);
     }
-
 }
