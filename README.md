@@ -44,4 +44,52 @@
 3. Querydsl 등의 동적 쿼리 처리 가능
 
 ***
+## fetch join
+### 특정한 엔티티를 조회할 때 연관관계를 가진 모든 엔티티를 같이 로딩하는 것을 'Eager loading' = '즉시 로딩' 이라 함.
+- 해당 로딩의 장점은??
+  - 로딩 한번에 연관관계가 있는 모든 엔티티를 가져옴.
+- 해당 로딩의 단점은??
+  - 연관관계가 복잡해 지면 join 으로 인한 성능 저하 발생함.
+- 어떻게 해결해 볼 수있음??
+  - 반대개념인 'Lazy loading' = '지연 로딩' 을 추천!!
+- 어떻게 사용함??
+  - 연관관계 어노테이션 속성으로 'fetch' 모드를 지정함.
+  - @ManyToOne (fetch = FetchType.LAZY) 명시적
+- 보편적인 코딩가이드에서는 어떻게 하는가??
+  - 지연로딩을 기본으로 사용하고, 상황에 맞게 필요한 방법을 찾는다.
+    - 여기서 말하는 필요한 방법이란??
+    - JPQL 과 left (outer) join 의 사용이다.
+    - 향후 기술 예정.
+***
 
+---
+# @Transactional
+- 메서드에 선언된 `@Transcational` 은 해당 메서드를 하나의 '트랜잭션' 으로 처리하라는 의미임.
+- 트랜잭션으로 처리하면 속성에 따라 다르게 동작하지만,
+- 기본적으로는 필요할 때 다시 데이터베이스와 연결이 생성됨.
+---
+
+---
+# 연관관계가 없는 엔티티 조인 처리에는 on 을 사용
+- Board 와 Member 사이에는 내부적으로 참조를 통해서 연관관계가 있음.
+- Board 와 Reply 는 좀 상황이 다름.
+- Board 입장에서는 Reply 객체를 참조하고 있지 않음.
+- 이런 경우에는 직접 조인에 필요한 조건은 'on' 을 이용해서 작성해 주어야 함.
+  - '특정 게시물과 해당 게시물에 속한 댓글을 조회' 하는 쿼리문
+```sql
+SELECT 
+    board.bno, board.title, board.writer_email,
+    rno, text
+FROM 
+    board left outer join reply
+ON 
+    reply.board_bno = board.bno
+WHERE
+    board.bno = 100;
+
+```
+---
+# JPQL
+- JPQL 에서의 update 와 delete 는 어떻게 처리하는가???
+  - @Modifying 을 사용해 준다.
+  
