@@ -3,6 +3,7 @@ package com.calmdev.board.repository;
 import com.calmdev.board.entity.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import com.calmdev.board.repository.search.SearchBoardRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board,Long>, SearchBoardRepository {
     /**
      * 해당 레파지토리의 해결 방법은 getBoardWithWriter()  는 Board 를 사용하고 있고,
      * Member를 같이 조회해야 하는 상황임.

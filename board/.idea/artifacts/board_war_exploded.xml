@@ -77,6 +77,15 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.3.21" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.3.21" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.29" />
+          <element id="library" level="project" name="Maven: com.querydsl:querydsl-jpa:5.0.0" />
+          <element id="library" level="project" name="Maven: com.querydsl:querydsl-core:5.0.0" />
+          <element id="library" level="project" name="Maven: com.mysema.commons:mysema-commons-lang:0.2.4" />
+          <element id="library" level="project" name="Maven: com.querydsl:querydsl-apt:5.0.0" />
+          <element id="library" level="project" name="Maven: com.querydsl:querydsl-codegen:5.0.0" />
+          <element id="library" level="project" name="Maven: com.querydsl:codegen-utils:5.0.0" />
+          <element id="library" level="project" name="Maven: org.eclipse.jdt:ecj:3.26.0" />
+          <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
+          <element id="library" level="project" name="Maven: io.github.classgraph:classgraph:4.8.108" />
         </element>
       </element>
       <element id="directory" name="META-INF">
